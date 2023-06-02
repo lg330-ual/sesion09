@@ -37,7 +37,7 @@ public class TestcreaciontareacorrectoTest extends Controlador {
 		// Browser selector
 		//int browser = 0; // 0: firefox, 1: chrome, ...
 		Boolean headless = false;
-		
+	
 		switch (browser) {
 		case 0: // firefox
 			// Firefox
