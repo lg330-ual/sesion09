@@ -27,7 +27,7 @@ import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TestcreaciontareacorrectoTest extends Controlador {
+public class TestloginincorrectocontrasenavaciaTest extends Controlador {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
@@ -35,29 +35,31 @@ public class TestcreaciontareacorrectoTest extends Controlador {
 	@Before
 	public void setUp() {
 		// Browser selector
-		//int browser = 0; // 0: firefox, 1: chrome, ...
+		// int browser = 0; // 0: firefox, 1: chrome, ...
 		Boolean headless = false;
-	
+
 		switch (browser) {
 		case 0: // firefox
 			// Firefox
 			System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
-			if (headless) firefoxOptions.setHeadless(headless);
+			if (headless)
+				firefoxOptions.setHeadless(headless);
 			driver = new FirefoxDriver(firefoxOptions);
-			
+
 			break;
-			
+
 		case 1: // chrome
-			//Chrome
+			// Chrome
 			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
 			ChromeOptions chromeOptions = new ChromeOptions();
-			if (headless) chromeOptions.setHeadless(headless);
+			if (headless)
+				chromeOptions.setHeadless(headless);
 			chromeOptions.addArguments("window-size=1920,1080");
 			driver = new ChromeDriver(chromeOptions);
-			
+
 			break;
-			
+
 		default:
 			fail("Please select a browser");
 			break;
@@ -72,44 +74,39 @@ public class TestcreaciontareacorrectoTest extends Controlador {
 	}
 
 	@Test
-	public void testcreaciontareacorrecto() {
-		// Test name: test-creacion-tarea-correcto
+	public void testloginincorrectocontrasenavacia() {
+		// Test name: test-login-incorrecto-contrasena-vacia
 		// Step # | name | target | value
-		// 1 | open | https://msdocs-core-sql-2023-ags000.azurewebsites.net/ |
-		driver.get("https://msdocs-core-sql-2023-ags000.azurewebsites.net/");
+		// 1 | open | https://opensource-demo.orangehrmlive.com/ |
+		driver.get("https://opensource-demo.orangehrmlive.com/");
 		// 2 | setWindowSize | 945x1012 |
-		driver.manage().window().setSize(new Dimension(1080, 824));
-		// 3 | click | linkText=Create New |
-		driver.findElement(By.linkText("Create New")).click();
-		// 4 | click | id=Description |
-		driver.findElement(By.id("Description")).click();
-		// 5 | type | id=Description | Comprar pan
-		driver.findElement(By.id("Description")).sendKeys("Comprar pan");
-		// 6 | click | id=CreatedDate |
-		driver.findElement(By.id("CreatedDate")).click();
-		// 7 | click | id=CreatedDate |
-		driver.findElement(By.id("CreatedDate")).click();
-		// 8 | type | id=CreatedDate | 2023-07-12
-		driver.findElement(By.id("CreatedDate")).sendKeys("2023-07-12");
-		// 9 | click | css=.btn |
-		driver.findElement(By.cssSelector(".btn")).click();
-		// 10 | click | css=td:nth-child(1) |
-		driver.findElement(By.cssSelector("td:nth-child(1)")).click();
-		// 11 | assertElementPresent | css=td:nth-child(1) |
+		driver.manage().window().setSize(new Dimension(945, 1012));
+		// 3 | waitForElementVisible | name=username | 30000
 		{
-			List<WebElement> elements = driver.findElements(By.cssSelector("td:nth-child(1)"));
-			assert (elements.size() > 0);
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
 		}
-		// 12 | click | css=td:nth-child(2) |
-		driver.findElement(By.cssSelector("td:nth-child(2)")).click();
-		// 13 | assertElementPresent | css=td:nth-child(2) |
+		// 4 | click | name=username |
+		driver.findElement(By.name("username")).click();
+		// 5 | type | name=username | Admin
+		driver.findElement(By.name("username")).sendKeys("Admin");
+		// 6 | click | css=.oxd-button |
+		driver.findElement(By.cssSelector(".oxd-button")).click();
+		// 7 | mouseOver | css=.oxd-button |
 		{
-			List<WebElement> elements = driver.findElements(By.cssSelector("td:nth-child(2)"));
-			assert (elements.size() > 0);
+			WebElement element = driver.findElement(By.cssSelector(".oxd-button"));
+			Actions builder = new Actions(driver);
+			builder.moveToElement(element).perform();
 		}
-		// 14 | click | linkText=Delete |
-		driver.findElement(By.linkText("Delete")).click();
-		// 15 | click | css=.btn |
-		driver.findElement(By.cssSelector(".btn")).click();
+		// 8 | mouseOut | css=.oxd-button |
+		{
+			WebElement element = driver.findElement(By.tagName("body"));
+			Actions builder = new Actions(driver);
+			builder.moveToElement(element, 0, 0).perform();
+		}
+		// 9 | click | css=.orangehrm-login-slot |
+		driver.findElement(By.cssSelector(".orangehrm-login-slot")).click();
+		// 10 | assertText | css=.oxd-text--span | Required
+		assertThat(driver.findElement(By.cssSelector(".oxd-text--span")).getText(), is("Required"));
 	}
 }

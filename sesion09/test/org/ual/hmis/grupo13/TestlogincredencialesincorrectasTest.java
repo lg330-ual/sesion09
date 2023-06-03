@@ -27,7 +27,7 @@ import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TestcreaciontareafechavaciaTest extends Controlador{
+public class TestlogincredencialesincorrectasTest extends Controlador {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
@@ -35,29 +35,31 @@ public class TestcreaciontareafechavaciaTest extends Controlador{
 	@Before
 	public void setUp() {
 		// Browser selector
-		//int browser = 0; // 0: firefox, 1: chrome, ...
+		// int browser = 0; // 0: firefox, 1: chrome, ...
 		Boolean headless = false;
-		
+
 		switch (browser) {
 		case 0: // firefox
 			// Firefox
 			System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
-			if (headless) firefoxOptions.setHeadless(headless);
+			if (headless)
+				firefoxOptions.setHeadless(headless);
 			driver = new FirefoxDriver(firefoxOptions);
-			
+
 			break;
-			
+
 		case 1: // chrome
-			//Chrome
+			// Chrome
 			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
 			ChromeOptions chromeOptions = new ChromeOptions();
-			if (headless) chromeOptions.setHeadless(headless);
+			if (headless)
+				chromeOptions.setHeadless(headless);
 			chromeOptions.addArguments("window-size=1920,1080");
 			driver = new ChromeDriver(chromeOptions);
-			
+
 			break;
-			
+
 		default:
 			fail("Please select a browser");
 			break;
@@ -72,29 +74,37 @@ public class TestcreaciontareafechavaciaTest extends Controlador{
 	}
 
 	@Test
-	public void testcreaciontareafechavacia() {
-		// Test name: test-creacion-tarea-fecha-vacia
+	public void testlogincredencialesincorrectas() {
+		// Test name: test-login-credenciales-incorrectas
 		// Step # | name | target | value
-		// 1 | open | https://msdocs-core-sql-2023-ags000.azurewebsites.net/ |
-		driver.get("https://msdocs-core-sql-2023-ags000.azurewebsites.net/");
-		// 2 | setWindowSize | 784x816 |
-		driver.manage().window().setSize(new Dimension(1080, 824));
-		// 3 | click | linkText=Create New |
-		driver.findElement(By.linkText("Create New")).click();
-		// 4 | click | id=Description |
-		driver.findElement(By.id("Description")).click();
-		// 5 | type | id=Description | Comprar pan integral
-		driver.findElement(By.id("Description")).sendKeys("Comprar pan integral");
-		// 6 | click | css=.btn |
-		driver.findElement(By.cssSelector(".btn")).click();
-		// 7 | assertElementPresent | id=CreatedDate-error |
+		// 1 | open | https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+		// |
+		driver.get("https://opensource-demo.orangehrmlive.com/");
+		// 2 | setWindowSize | 884x789 |
+		driver.manage().window().setSize(new Dimension(884, 789));
+		// 3 | waitForElementVisible | name=username | 30000
 		{
-			List<WebElement> elements = driver.findElements(By.id("CreatedDate-error"));
-			assert (elements.size() > 0);
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
 		}
-		// 8 | click | css=.row |
-		driver.findElement(By.cssSelector(".row")).click();
-		// 9 | click | linkText=Back to List |
-		driver.findElement(By.linkText("Back to List")).click();
+		// 4 | click | name=username |
+		driver.findElement(By.name("username")).click();
+		// 5 | type | name=username | aaa
+		driver.findElement(By.name("username")).sendKeys("aaa");
+		// 6 | click | name=password |
+		driver.findElement(By.name("password")).click();
+		// 7 | type | name=password | aaa
+		driver.findElement(By.name("password")).sendKeys("aaa");
+		// 8 | click | css=.oxd-button |
+		driver.findElement(By.cssSelector(".oxd-button")).click();
+		// 9 | waitForElementVisible | css=.oxd-alert-content | 30000
+		{
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oxd-alert-content")));
+		}
+		// 10 | click | css=.oxd-alert-content |
+		driver.findElement(By.cssSelector(".oxd-alert-content")).click();
+		// 11 | assertText | css=.oxd-alert-content-text | Invalid credentials
+		assertThat(driver.findElement(By.cssSelector(".oxd-alert-content-text")).getText(), is("Invalid credentials"));
 	}
 }
