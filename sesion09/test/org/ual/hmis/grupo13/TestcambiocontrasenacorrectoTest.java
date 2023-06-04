@@ -33,7 +33,7 @@ public class TestcambiocontrasenacorrectoTest extends Controlador {
 	JavascriptExecutor js;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception{
 		// Browser selector
 		// int browser = 0; // 0: firefox, 1: chrome, ...
 		Boolean headless = false;
@@ -43,8 +43,8 @@ public class TestcambiocontrasenacorrectoTest extends Controlador {
 			// Firefox
 			System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
-			if (headless)
-				firefoxOptions.setHeadless(headless);
+			//if (headless)
+				firefoxOptions.setHeadless(true);
 			driver = new FirefoxDriver(firefoxOptions);
 
 			break;
@@ -53,8 +53,8 @@ public class TestcambiocontrasenacorrectoTest extends Controlador {
 			// Chrome
 			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
 			ChromeOptions chromeOptions = new ChromeOptions();
-			if (headless)
-				chromeOptions.setHeadless(headless);
+			//if (headless)
+				chromeOptions.setHeadless(true);
 			chromeOptions.addArguments("window-size=1920,1080");
 			driver = new ChromeDriver(chromeOptions);
 
