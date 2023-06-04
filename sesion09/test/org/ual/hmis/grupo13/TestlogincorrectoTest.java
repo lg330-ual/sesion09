@@ -41,7 +41,7 @@ public class TestlogincorrectoTest extends Controlador{
 		switch (browser) {
 		case 0: // firefox
 			// Firefox
-			System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
+//			System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver.exe");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
 			//if (headless)
 				firefoxOptions.setHeadless(true);
@@ -51,7 +51,7 @@ public class TestlogincorrectoTest extends Controlador{
 
 		case 1: // chrome
 			// Chrome
-			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+//			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
 			ChromeOptions chromeOptions = new ChromeOptions();
 			//if (headless)
 				chromeOptions.setHeadless(true);
